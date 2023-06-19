@@ -1,14 +1,14 @@
-const mongooose = require('mongoose');
+const mongoose = require('mongoose');
 
-const TaskSchema = mongooose.Schema(
+const TaskSchema = mongoose.Schema(
   {
-    user: mongoose.Schema.Types.ObjectId,
+    userId: mongoose.Schema.Types.ObjectId,
     category: String,
     clientName: String,
     job: String,
     startDate: Date,
     endDate: Date,
-    status: Number,
+    status: String,
     remarks: String,
   },
   {
