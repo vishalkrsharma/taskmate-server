@@ -19,7 +19,7 @@ const login = async (req, res) => {
   const token = jwt.sign({ id: user._id, username }, process.env.JWT_SECRET);
   user.password = undefined;
 
-  res.status(201).json({ user, token });
+  res.status(200).json({ user, token });
 };
 
 const register = async (req, res) => {
