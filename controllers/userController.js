@@ -26,6 +26,8 @@ const login = async (req, res) => {
     updatedAt: user.updatedAt,
     token,
   };
+
+  res.header('Access-Control-Allow-Origin', '*');
   res.status(200).json(finalUser);
 };
 
@@ -51,6 +53,7 @@ const register = async (req, res) => {
       password: encryptPassword,
     });
 
+    res.header('Access-Control-Allow-Origin', '*');
     res.status(201).json({ message: 'User created' });
   } catch (err) {
     res.json({ error: err });
