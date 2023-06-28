@@ -19,7 +19,6 @@ const newTask = async (req, res) => {
     const task = await Task.create({ userId: user._id, category, clientName, job, startDate, endDate, status, remarks });
 
     res.status(201).json({ task });
-    console.log('yes');
   } catch (err) {
     res.json({ error: err });
   }

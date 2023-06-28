@@ -51,7 +51,7 @@ const register = async (req, res) => {
       password: encryptPassword,
     });
 
-    res.status(201);
+    res.status(201).json({ message: 'User created' });
   } catch (err) {
     res.json({ error: err });
   }
