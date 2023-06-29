@@ -11,7 +11,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: '*',
+    origin: 'https://tm-client-black.vercel.app',
   })
 );
 app.use(express.json());
