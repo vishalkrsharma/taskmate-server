@@ -19,10 +19,13 @@ const TaskSchema = mongoose.Schema(
       required: true,
     },
     startDate: {
-      type: Date,
+      type: String,
       required: true,
     },
-    endDate: Date,
+    endDate: {
+      type: String,
+      required: true,
+    },
     status: {
       type: String,
       required: true,

@@ -25,21 +25,34 @@ const newTask = async (req, res) => {
 };
 
 const editTask = async (req, res) => {
-  const { taskId } = req.body;
+  const { task } = req.body;
+  const { _id, category, clientName, job, startDate, endDate, status, remarks } = task;
+  try {
+    const foundTask = await Task.findById({ _id });
+    if (!foundTask) {
+      res.json(404).json({ message: 'Task not found' });
+      return;
+    }
+
+    await Task.findOneAndUpdate({ _id: _id }, { category, clientName, job, startDate, endDate, status, remarks });
+    res.status(200).json({ message: 'Task Edited' });
+  } catch (err) {
+    res.json({ error: err });
+  }
 };
 const deleteTask = async (req, res) => {
   const { taskId } = req.body;
   try {
-    const task = await Task.findOne({ _id: taskId });
+    const foundTask = await Task.findOne({ _id: taskId });
 
-    if (!task) {
+    if (!foundTask) {
       res.json(404).json({ message: 'task not found in db' });
       return;
     }
 
-    const deletedTask = await Task.deleteOne({ _id: taskId });
+    await Task.deleteOne({ _id: taskId });
 
-    res.statu(200).json({ message: 'task deleted' });
+    res.status(200).json({ message: 'task deleted' });
   } catch (err) {
     res.json({ error: err });
   }
