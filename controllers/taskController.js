@@ -4,6 +4,7 @@ const User = require('../models/User');
 
 const getTasks = async (req, res) => {
   const { user } = req.body;
+  console.log(user);
   try {
     const tasks = await Task.find({ userId: user._id });
     res.status(200).json({ tasks });
@@ -14,6 +15,7 @@ const getTasks = async (req, res) => {
 
 const newTask = async (req, res) => {
   const { user, taskInfo } = req.body;
+  console.log(req.body);
   const { category, clientName, job, startDate, endDate, status, remarks } = taskInfo;
   try {
     const task = await Task.create({ userId: user._id, category, clientName, job, startDate, endDate, status, remarks });
