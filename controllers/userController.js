@@ -58,4 +58,16 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = { login, register };
+const changeUsername = async (req, res) => {
+  const { newUsername, user } = req.body;
+  try {
+    if (newUsername.length === 0) {
+      res.json('invalid username');
+      return;
+    }
+  } catch (err) {
+    res.json({ error: err });
+  }
+};
+
+module.exports = { login, register, changeUsername };
