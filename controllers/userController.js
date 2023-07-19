@@ -59,12 +59,25 @@ const register = async (req, res) => {
 };
 
 const changeUsername = async (req, res) => {
-  const { newUsername, user } = req.body;
+  const { newUsername, username } = req.body;
+  const token = req.headers.authorization.split(' ')[1];
+  let foundUser = await User.findOne({ username });
+
   try {
     if (newUsername.length === 0) {
       res.json('invalid username');
       return;
     }
+
+    if (!foundUser) {
+      res.json({ message: 'user not found' });
+    }
+
+    await User.findOneAndUpdate({ username }, { ...foundUser, username: newUsername });
+    foundUser.username = newUsername;
+    foundUser.token = token;
+
+    res.status(200).json(foundUser);
   } catch (err) {
     res.json({ error: err });
   }
