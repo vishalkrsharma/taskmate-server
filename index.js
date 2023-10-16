@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
 const taskRoutes = require('./routes/taskRoutes');
+const connectDB = require('./config/db');
 
 dotenv.config();
 
@@ -15,7 +16,7 @@ app.use(
   })
 );
 app.use(express.json());
-mongoose.connect(process.env.MONGO_URI);
+connectDB();
 
 app.use('/api/user', userRoutes);
 app.use('/api/task', taskRoutes);
