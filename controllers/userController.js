@@ -4,30 +4,34 @@ const User = require('../models/User');
 
 const login = async (req, res) => {
   const { username, password } = req.body;
-  const user = await User.findOne({ username });
+  try {
+    const user = await User.findOne({ username });
 
-  if (!user) {
-    res.json({ message: 'user not found' });
-    return;
+    if (!user) {
+      res.status(403).json({ message: 'user not found' });
+      return;
+    }
+
+    if (!bcrypt.compareSync(password, user.password)) {
+      res.status(403).json({ message: 'wrong password' });
+      return;
+    }
+
+    const token = jwt.sign({ id: user._id, username }, process.env.JWT_SECRET);
+
+    const finalUser = {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+      token,
+    };
+
+    res.status(200).json(finalUser);
+  } catch (err) {
+    res.json({ message: err });
   }
-
-  if (!bcrypt.compareSync(password, user.password)) {
-    res.json({ message: 'wrong password' });
-    return;
-  }
-
-  const token = jwt.sign({ id: user._id, username }, process.env.JWT_SECRET);
-
-  const finalUser = {
-    _id: user._id,
-    username: user.username,
-    email: user.email,
-    createdAt: user.createdAt,
-    updatedAt: user.updatedAt,
-    token,
-  };
-
-  res.status(200).json(finalUser);
 };
 
 const register = async (req, res) => {
@@ -59,28 +63,90 @@ const register = async (req, res) => {
 };
 
 const changeUsername = async (req, res) => {
-  const { newUsername, username } = req.body;
+  let { newUsername, user } = req.body;
   const token = req.headers.authorization.split(' ')[1];
-  let foundUser = await User.findOne({ username });
+
+  if (newUsername.length === 0) {
+    res.json('invalid username');
+    return;
+  }
+
+  if (await User.findOne({ username: newUsername })) {
+    res.json('username taken');
+    return;
+  }
 
   try {
-    if (newUsername.length === 0) {
-      res.json('invalid username');
-      return;
-    }
+    await User.updateOne(
+      { _id: user._id },
+      {
+        $set: {
+          username: newUsername,
+        },
+      }
+    );
 
-    if (!foundUser) {
-      res.json({ message: 'user not found' });
-    }
-
-    await User.findOneAndUpdate({ username }, { ...foundUser, username: newUsername });
-    foundUser.username = newUsername;
-    foundUser.token = token;
-
-    res.status(200).json(foundUser);
+    user.username = newUsername;
+    user.token = token;
+    res.status(200).json(user);
   } catch (err) {
     res.json({ error: err });
   }
 };
 
-module.exports = { login, register, changeUsername };
+const changeEmail = async (req, res) => {
+  let { newEmail, user } = req.body;
+  const token = req.headers.authorization.split(' ')[1];
+
+  if (newEmail.length === 0) {
+    res.json('invalid email');
+    return;
+  }
+
+  if (await User.findOne({ email: newEmail })) {
+    res.json('email taken');
+    return;
+  }
+
+  try {
+    await User.updateOne(
+      { _id: user._id },
+      {
+        $set: {
+          email: newEmail,
+        },
+      }
+    );
+
+    user.email = newEmail;
+    user.token = token;
+    res.status(200).json(user);
+  } catch (err) {
+    res.json({ error: err });
+  }
+};
+
+const changePassword = async (req, res) => {
+  console.log('a');
+  let { newPassword, user } = req.body;
+  if (newPassword.length === 0) {
+    res.json('invalid password');
+    return;
+  }
+
+  try {
+    await User.updateOne(
+      { _id: user._id },
+      {
+        $set: {
+          password: await bcrypt.hash(newPassword, bcrypt.genSaltSync(5)),
+        },
+      }
+    );
+    res.status(200).json({ message: 'done' });
+  } catch (err) {
+    res.json({ error: err });
+  }
+};
+
+module.exports = { login, register, changeUsername, changeEmail, changePassword };
