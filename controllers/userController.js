@@ -8,12 +8,12 @@ const login = async (req, res) => {
     const user = await User.findOne({ username });
 
     if (!user) {
-      res.status(403).json({ message: 'user not found' });
+      res.status(404).json({ message: 'User not found' });
       return;
     }
 
     if (!bcrypt.compareSync(password, user.password)) {
-      res.status(403).json({ message: 'wrong password' });
+      res.status(403).json({ message: 'Wrong Password' });
       return;
     }
 
@@ -41,10 +41,11 @@ const register = async (req, res) => {
       res.status(400).json({ message: 'All fields compulsory' });
       return;
     }
-    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+    const usernameUser = await User.findOne({ username });
+    const emailUser = await User.findOne({ email });
 
-    if (existingUser) {
-      res.status(403).json({ message: 'username or email taken' });
+    if (usernameUser || emailUser) {
+      res.status(403).json({ message: 'Username or Email taken' });
       return;
     }
 
@@ -56,7 +57,18 @@ const register = async (req, res) => {
       password: encryptPassword,
     });
 
-    res.status(201).json({ message: 'User created' });
+    const token = jwt.sign({ id: user._id, username }, process.env.JWT_SECRET);
+
+    const finalUser = {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+      token,
+    };
+
+    res.status(201).json(finalUser);
   } catch (err) {
     res.json({ error: err });
   }
@@ -67,12 +79,12 @@ const changeUsername = async (req, res) => {
   const token = req.headers.authorization.split(' ')[1];
 
   if (newUsername.length === 0) {
-    res.json('invalid username');
+    res.json('Invalid Username');
     return;
   }
 
   if (await User.findOne({ username: newUsername })) {
-    res.json('username taken');
+    res.json('Username Taken');
     return;
   }
 
@@ -99,12 +111,12 @@ const changeEmail = async (req, res) => {
   const token = req.headers.authorization.split(' ')[1];
 
   if (newEmail.length === 0) {
-    res.json('invalid email');
+    res.json('Invalid email');
     return;
   }
 
   if (await User.findOne({ email: newEmail })) {
-    res.json('email taken');
+    res.json('Email taken');
     return;
   }
 
@@ -127,10 +139,9 @@ const changeEmail = async (req, res) => {
 };
 
 const changePassword = async (req, res) => {
-  console.log('a');
   let { newPassword, user } = req.body;
   if (newPassword.length === 0) {
-    res.json('invalid password');
+    res.json('Invalid password');
     return;
   }
 
@@ -143,7 +154,7 @@ const changePassword = async (req, res) => {
         },
       }
     );
-    res.status(200).json({ message: 'done' });
+    res.status(200).json({ message: 'Done' });
   } catch (err) {
     res.json({ error: err });
   }
