@@ -1,10 +1,9 @@
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const userRoutes = require('./routes/userRoutes');
-const taskRoutes = require('./routes/taskRoutes');
-const connectDB = require('./config/db');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import userRoutes from './routes/userRoutes.js';
+import taskRoutes from './routes/taskRoutes.js';
+import connectDB from './config/db.js';
 
 dotenv.config();
 

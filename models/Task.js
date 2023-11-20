@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const TaskSchema = mongoose.Schema(
+const TaskSchema = Schema(
   {
     userId: {
       type: String,
@@ -40,6 +40,6 @@ const TaskSchema = mongoose.Schema(
   }
 );
 
-const Task = mongoose.model('task', TaskSchema);
+const Task = model('task', TaskSchema);
 
-module.exports = Task;
+export default Task;
