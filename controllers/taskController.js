@@ -1,6 +1,4 @@
-const mongoose = require('mongoose');
-const Task = require('../models/Task');
-const User = require('../models/User');
+import Task from '../models/Task.js';
 
 const getTasks = async (req, res) => {
   const { user } = req.body;
@@ -58,4 +56,4 @@ const deleteTask = async (req, res) => {
   }
 };
 
-module.exports = { getTasks, newTask, editTask, deleteTask };
+export { getTasks, newTask, editTask, deleteTask };

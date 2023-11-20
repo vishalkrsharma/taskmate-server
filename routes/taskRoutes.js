@@ -1,6 +1,6 @@
-const express = require('express');
-const { getTasks, newTask, editTask, deleteTask } = require('../controllers/taskController');
-const { verifyToken } = require('../middlewares/userMiddleware');
+import express from 'express';
+import { getTasks, newTask, editTask, deleteTask } from '../controllers/taskController.js';
+import verifyToken from '../middlewares/userMiddleware.js';
 
 const router = express.Router();
 
@@ -9,4 +9,4 @@ router.post('/gettasks', verifyToken, getTasks);
 router.post('/edittask', verifyToken, editTask);
 router.post('/deletetask', verifyToken, deleteTask);
 
-module.exports = router;
+export default router;
