@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const TaskSchema = Schema(
+const schema = Schema(
   {
     userId: {
       type: String,
@@ -40,6 +40,6 @@ const TaskSchema = Schema(
   }
 );
 
-const Task = model('task', TaskSchema);
+const task = model('task', schema);
 
-export default Task;
+export default task;

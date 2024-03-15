@@ -1,4 +1,4 @@
-import Task from '../models/Task.js';
+import Task from '../models/task.js';
 
 const getTasks = async (req, res) => {
   const { user } = req.body;

@@ -1,5 +1,5 @@
 import express from 'express';
-import { getTasks, newTask, editTask, deleteTask } from '../controllers/taskController.js';
+import { getTasks, newTask, editTask, deleteTask } from '../controllers/task-controller.js';
 import verifyToken from '../middlewares/userMiddleware.js';
 
 const router = express.Router();
