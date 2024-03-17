@@ -3,35 +3,24 @@ import { Schema, model } from 'mongoose';
 const schema = Schema(
   {
     userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+    },
+    title: {
       type: String,
       required: true,
     },
-    category: {
+    content: {
       type: String,
       required: true,
     },
-    clientName: {
-      type: String,
+    date: {
+      type: Date,
       required: true,
     },
-    job: {
-      type: String,
-      required: true,
-    },
-    startDate: {
-      type: String,
-      required: true,
-    },
-    endDate: {
-      type: String,
-      required: true,
-    },
-    status: {
-      type: String,
-      required: true,
-    },
-    remarks: {
-      type: String,
+    isArchived: {
+      type: Boolean,
+      default: false,
       required: true,
     },
   },

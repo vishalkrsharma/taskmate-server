@@ -1,59 +1,80 @@
 import Task from '../models/task.js';
 
-const getTasks = async (req, res) => {
-  const { user } = req.body;
+export const getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({ userId: user._id });
+    const { userId } = req.query;
+
+    const tasks = await Task.find({ userId });
+
     res.status(200).json({ tasks });
-  } catch (err) {
-    res.json({ error: err });
+  } catch (error) {
+    console.log('[GET_TASKS]', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-const newTask = async (req, res) => {
-  const { user, taskInfo } = req.body;
-  const { category, clientName, job, startDate, endDate, status, remarks } = taskInfo;
+export const getTask = async (req, res) => {
   try {
-    const task = await Task.create({ userId: user._id, category, clientName, job, startDate, endDate, status, remarks });
+    const { userId, taskId } = req.query;
 
-    res.status(201).json({ task });
-  } catch (err) {
-    res.json({ error: err });
+    const task = await Task.findOne({ _id: taskId, userId });
+
+    res.status(200).json({ task });
+  } catch (error) {
+    console.log('[GET_TASK]', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-const editTask = async (req, res) => {
-  const { task } = req.body;
-  const { _id, category, clientName, job, startDate, endDate, status, remarks } = task;
+export const newTask = async (req, res) => {
   try {
-    const foundTask = await Task.findById({ _id });
-    if (!foundTask) {
-      res.json(404).json({ message: 'Task not found' });
-      return;
+    const { userId, title, content, date, isArchived } = req.body;
+
+    const task = await Task.create({ userId, title, content, date, isArchived });
+
+    res.status(201).json({ message: 'Task created successfully.', success: true, task });
+  } catch (error) {
+    console.log('[NEW_TASK]', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+export const editTask = async (req, res) => {
+  try {
+    const { taskId, userId, title, content, date, isArchived } = req.body;
+    const task = await Task.findOne({ _id: taskId, userId });
+
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found.', success: false });
     }
 
-    await Task.findOneAndUpdate({ _id: _id }, { category, clientName, job, startDate, endDate, status, remarks });
-    res.status(200).json({ message: 'Task Edited' });
-  } catch (err) {
-    res.json({ error: err });
+    task.title = title;
+    task.content = content;
+    task.date = date;
+    task.isArchived = isArchived;
+
+    await task.save();
+
+    res.status(200).json({ message: 'Task edited successfully.', success: true, task });
+  } catch (error) {
+    console.log('[EDIT_TASK]', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-const deleteTask = async (req, res) => {
-  const { taskId } = req.body;
-  try {
-    const foundTask = await Task.findOne({ _id: taskId });
 
-    if (!foundTask) {
-      res.json(404).json({ message: 'task not found in db' });
-      return;
+export const deleteTask = async (req, res) => {
+  try {
+    const { userId, taskId } = req.query;
+
+    const task = await Task.deleteMany({ userId, _id: taskId });
+
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found.', success: false });
     }
 
-    await Task.deleteOne({ _id: taskId });
-
-    res.status(200).json({ message: 'task deleted' });
-  } catch (err) {
-    res.json({ error: err });
+    res.status(200).json({ message: 'Task deleted successfully.', success: true });
+  } catch (error) {
+    console.log('[DELETE_TASK]', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
-export { getTasks, newTask, editTask, deleteTask };

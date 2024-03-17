@@ -15,12 +15,16 @@ const app = express();
 app.use(
   cors({
     origin: process.env.CLIENT_URL || 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 200,
   })
 );
+
 app.use(express.json());
 app.use(cookieParser());
+
 connectDB();
 
 app.use('/api/user', userRoutes);
