@@ -1,12 +1,31 @@
 import Task from '../models/task.js';
+import { startOfDay, endOfDay } from 'date-fns';
 
 export const getTasks = async (req, res) => {
   try {
     const { userId } = req.query;
+    let filter = { userId };
 
-    const tasks = await Task.find({ userId });
+    if (req.query.past) {
+      filter.date = {
+        $lt: startOfDay(new Date()),
+      };
+    } else if (req.query.today) {
+      filter.date = {
+        $gte: startOfDay(new Date()),
+        $lt: endOfDay(new Date()),
+      };
+    } else if (req.query.future) {
+      filter.date = {
+        $gte: endOfDay(new Date()),
+      };
+    }
 
-    res.status(200).json({ tasks });
+    const tasks = await Task.find(filter);
+
+    res.status(200).json({
+      tasks,
+    });
   } catch (error) {
     console.log('[GET_TASKS]', error);
     res.status(500).json({ error: 'Internal Server Error' });

@@ -29,8 +29,8 @@ connectDB();
 app.use('/api/task', taskRoutes);
 app.use('/api/auth', authRoutes);
 
-app.get('/test', (req, res) => {
-  res.send('ok');
+app.get('/api/hello', (req, res) => {
+  res.send('Hello World!');
 });
 
 app.listen(process.env.PORT || 5000, () => {
