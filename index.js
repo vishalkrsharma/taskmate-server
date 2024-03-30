@@ -1,12 +1,11 @@
-import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import express from 'express';
 import cookieParser from 'cookie-parser';
 
-import userRoutes from './routes/user-routes.js';
+import connectDB from './utils/db.js';
 import taskRoutes from './routes/task-routes.js';
 import authRoutes from './routes/auth-routes.js';
-import connectDB from './utils/db.js';
 
 dotenv.config();
 
@@ -27,12 +26,11 @@ app.use(cookieParser());
 
 connectDB();
 
-app.use('/api/user', userRoutes);
 app.use('/api/task', taskRoutes);
 app.use('/api/auth', authRoutes);
 
-app.get('/test', (req, res) => {
-  res.send('ok');
+app.get('/api/hello', (req, res) => {
+  res.send('Hello World!');
 });
 
 app.listen(process.env.PORT || 5000, () => {
