@@ -4,7 +4,7 @@ import { startOfDay, endOfDay } from 'date-fns';
 export const getTasks = async (req, res) => {
   try {
     const { userId } = req.query;
-    let filter = { userId };
+    let filter = { userId, isArchived: false };
 
     if (!userId) {
       res.status(401).json({ message: 'Unauthorized' });
@@ -28,6 +28,8 @@ export const getTasks = async (req, res) => {
         $gte: startOfDay(req.query.date),
         $lt: endOfDay(req.query.date),
       };
+    } else if (req.query.isArchived) {
+      filter.isArchived = true;
     }
 
     const tasks = await Task.find(filter);
