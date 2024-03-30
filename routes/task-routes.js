@@ -1,7 +1,8 @@
-import express from 'express';
+import { Router } from 'express';
+
 import { getTasks, newTask, editTask, deleteTask, getTask, getTaskDates } from '../controllers/task-controller.js';
 
-const router = express.Router();
+const router = Router();
 
 router.get('/get-tasks', getTasks);
 router.get('/get-task', getTask);

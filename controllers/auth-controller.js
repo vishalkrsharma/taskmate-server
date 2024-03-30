@@ -20,7 +20,7 @@ export const signup = async (req, res, next) => {
     });
     res.status(201).json({ message: 'User signed up successfully.', success: true, user });
   } catch (error) {
-    console.log('[SIGNIN]', error);
+    console.error('[SIGNIN]', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -32,6 +32,7 @@ export const login = async (req, res, next) => {
       return res.status(400).json({ message: 'All fields are required.' });
     }
     const user = await User.findOne({ username });
+
     if (!user) {
       return res.status(400).json({ message: 'User not found.' });
     }
