@@ -36,7 +36,7 @@ export const getTasks = async (req, res) => {
 
     res.status(200).json({ tasks });
   } catch (error) {
-    console.log('[GET_TASKS]', error);
+    console.error('[GET_TASKS]', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -57,7 +57,7 @@ export const getTask = async (req, res) => {
 
     res.status(200).json({ task });
   } catch (error) {
-    console.log('[GET_TASK]', error);
+    console.error('[GET_TASK]', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -78,7 +78,7 @@ export const newTask = async (req, res) => {
 
     res.status(201).json({ message: 'Task created successfully.', success: true, task });
   } catch (error) {
-    console.log('[NEW_TASK]', error);
+    console.error('[NEW_TASK]', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -110,7 +110,7 @@ export const editTask = async (req, res) => {
 
     res.status(200).json({ message: 'Task edited successfully.', success: true, task });
   } catch (error) {
-    console.log('[EDIT_TASK]', error);
+    console.error('[EDIT_TASK]', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -135,7 +135,7 @@ export const deleteTask = async (req, res) => {
 
     res.status(200).json({ message: 'Task deleted successfully.', success: true });
   } catch (error) {
-    console.log('[DELETE_TASK]', error);
+    console.error('[DELETE_TASK]', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -152,7 +152,7 @@ export const getTaskDates = async (req, res) => {
 
     res.status(200).json({ taskDates });
   } catch (error) {
-    console.log('[GET_TASK_DAYS]', error);
+    console.error('[GET_TASK_DAYS]', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };

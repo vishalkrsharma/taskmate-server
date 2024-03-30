@@ -8,8 +8,8 @@ const connectDB = async () => {
     });
 
     console.log(`DB connected: ${connect.connection.host}`);
-  } catch (err) {
-    console.log(`Error: ${err}`);
+  } catch (error) {
+    console.error('[DB]', error);
     process.exit();
   }
 };
