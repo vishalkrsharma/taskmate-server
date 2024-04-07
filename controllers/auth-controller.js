@@ -18,14 +18,14 @@ export const signup = async (req, res, next) => {
       withCredentials: true,
       httpOnly: false,
     });
-    res.status(201).json({ message: 'User signed up successfully.', success: true, user });
+    return res.status(201).json({ message: 'User signed up successfully.', success: true, user });
   } catch (error) {
     console.error('[SIGNIN]', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-export const login = async (req, res, next) => {
+export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
     if (!username || !password) {
@@ -49,10 +49,9 @@ export const login = async (req, res, next) => {
       httpOnly: false,
     });
 
-    res.status(201).json({ message: 'User logged in successfully.', success: true, user });
-    next();
+    return res.status(201).json({ message: 'User logged in successfully.', success: true, user });
   } catch (error) {
     console.error('[LOGIN]', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };

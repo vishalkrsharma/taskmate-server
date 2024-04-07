@@ -7,7 +7,7 @@ export const getTasks = async (req, res) => {
     let filter = { userId, isArchived: false };
 
     if (!userId) {
-      res.status(401).json({ message: 'Unauthorized' });
+      return res.status(401).json({ message: 'Unauthorized' });
     }
 
     if (req.query.past) {
@@ -34,10 +34,10 @@ export const getTasks = async (req, res) => {
 
     const tasks = await Task.find(filter);
 
-    res.status(200).json({ tasks });
+    return res.status(200).json({ tasks });
   } catch (error) {
     console.error('[GET_TASKS]', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
@@ -46,19 +46,19 @@ export const getTask = async (req, res) => {
     const { userId, taskId } = req.query;
 
     if (!userId) {
-      res.status(401).json({ message: 'Unauthorized' });
+      return res.status(401).json({ message: 'Unauthorized' });
     }
 
     if (!taskId) {
-      res.status(400).json({ message: 'Task Id is required' });
+      return res.status(400).json({ message: 'Task Id is required' });
     }
 
     const task = await Task.findOne({ _id: taskId, userId });
 
-    res.status(200).json({ task });
+    return res.status(200).json({ task });
   } catch (error) {
     console.error('[GET_TASK]', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
@@ -67,7 +67,7 @@ export const newTask = async (req, res) => {
     let { userId, title, content, date, isArchived } = req.body;
 
     if (!userId) {
-      res.status(401).json({ message: 'Unauthorized' });
+      return res.status(401).json({ message: 'Unauthorized' });
     }
 
     const dateObj = new Date(date);
@@ -76,10 +76,10 @@ export const newTask = async (req, res) => {
 
     const task = await Task.create({ userId, title, content, date: new Date(istString), isArchived });
 
-    res.status(201).json({ message: 'Task created successfully.', success: true, task });
+    return res.status(201).json({ message: 'Task created successfully.', success: true, task });
   } catch (error) {
     console.error('[NEW_TASK]', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
@@ -88,11 +88,11 @@ export const editTask = async (req, res) => {
     const { taskId, userId, title, content, date, isArchived } = req.body;
 
     if (!userId) {
-      res.status(401).json({ message: 'Unauthorized' });
+      return res.status(401).json({ message: 'Unauthorized' });
     }
 
     if (!taskId) {
-      res.status(400).json({ message: 'Task Id is required' });
+      return res.status(400).json({ message: 'Task Id is required' });
     }
 
     const task = await Task.findOne({ _id: taskId, userId });
@@ -108,10 +108,10 @@ export const editTask = async (req, res) => {
 
     await task.save();
 
-    res.status(200).json({ message: 'Task edited successfully.', success: true, task });
+    return res.status(200).json({ message: 'Task edited successfully.', success: true, task });
   } catch (error) {
     console.error('[EDIT_TASK]', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
@@ -120,11 +120,11 @@ export const deleteTask = async (req, res) => {
     const { userId, taskId } = req.query;
 
     if (!userId) {
-      res.status(401).json({ message: 'Unauthorized' });
+      return res.status(401).json({ message: 'Unauthorized' });
     }
 
     if (!taskId) {
-      res.status(400).json({ message: 'Task Id is required' });
+      return res.status(400).json({ message: 'Task Id is required' });
     }
 
     const task = await Task.deleteMany({ userId, _id: taskId });
@@ -133,10 +133,10 @@ export const deleteTask = async (req, res) => {
       return res.status(404).json({ message: 'Task not found.', success: false });
     }
 
-    res.status(200).json({ message: 'Task deleted successfully.', success: true });
+    return res.status(200).json({ message: 'Task deleted successfully.', success: true });
   } catch (error) {
     console.error('[DELETE_TASK]', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
@@ -145,14 +145,14 @@ export const getTaskDates = async (req, res) => {
     const { userId } = req.query;
 
     if (!userId) {
-      res.status(401).json({ message: 'Unauthorized' });
+      return res.status(401).json({ message: 'Unauthorized' });
     }
 
     const taskDates = await Task.find({ userId }).distinct('date');
 
-    res.status(200).json({ taskDates });
+    return res.status(200).json({ taskDates });
   } catch (error) {
     console.error('[GET_TASK_DAYS]', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };

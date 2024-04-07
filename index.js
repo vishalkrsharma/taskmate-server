@@ -32,7 +32,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 
 app.get('/api/hello', (req, res) => {
-  res.send('Hello World!');
+  return res.send('Hello World!');
 });
 
 app.listen(process.env.PORT || 5000, () => {
