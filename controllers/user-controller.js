@@ -2,7 +2,8 @@ import User from '../models/user.js';
 
 export const changeUsername = async (req, res) => {
   try {
-    const { userId, username } = req.body;
+    const { username } = req.body;
+    const { userId } = req;
 
     if (!userId) {
       return res.status(401).json({ message: 'Unauthorized' });
@@ -33,7 +34,8 @@ export const changeUsername = async (req, res) => {
 
 export const changePassword = async (req, res) => {
   try {
-    const { userId, password } = req.body;
+    const { password } = req.body;
+    const { userId } = req;
 
     if (!userId) {
       return res.status(401).json({ message: 'Unauthorized' });

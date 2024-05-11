@@ -16,7 +16,8 @@ export const signup = async (req, res, next) => {
 
     res.cookie('token', token, {
       withCredentials: true,
-      httpOnly: false,
+      httpOnly: true,
+      secure: true,
     });
     return res.status(201).json({ message: 'User signed up successfully.', success: true, user });
   } catch (error) {
@@ -46,12 +47,27 @@ export const login = async (req, res) => {
     const token = createSecretToken(user._id);
     res.cookie('token', token, {
       withCredentials: true,
-      httpOnly: false,
+      httpOnly: true,
+      secure: true,
     });
 
     return res.status(201).json({ message: 'User logged in successfully.', success: true, user });
   } catch (error) {
     console.error('[LOGIN]', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+export const logout = async (req, res) => {
+  try {
+    console.log('a');
+    res.clearCookie('token');
+    return res.json({
+      success: true,
+      status: 200,
+    });
+  } catch (error) {
+    console.error('[LOGOUT]', error);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
