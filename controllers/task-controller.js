@@ -3,8 +3,8 @@ import { startOfDay, endOfDay } from 'date-fns';
 
 export const getTasks = async (req, res) => {
   try {
-    const { userId } = req.query;
-    let filter = { userId, isArchived: false };
+    const { userId } = req;
+    let filter = { isArchived: false };
 
     if (!userId) {
       return res.status(401).json({ message: 'Unauthorized' });
@@ -43,7 +43,8 @@ export const getTasks = async (req, res) => {
 
 export const getTask = async (req, res) => {
   try {
-    const { userId, taskId } = req.query;
+    const { taskId } = req.query;
+    const { userId } = req;
 
     if (!userId) {
       return res.status(401).json({ message: 'Unauthorized' });
@@ -64,7 +65,8 @@ export const getTask = async (req, res) => {
 
 export const newTask = async (req, res) => {
   try {
-    let { userId, title, content, date, isArchived } = req.body;
+    const { title, content, date, isArchived } = req.body;
+    const { userId } = req;
 
     if (!userId) {
       return res.status(401).json({ message: 'Unauthorized' });
@@ -85,7 +87,8 @@ export const newTask = async (req, res) => {
 
 export const editTask = async (req, res) => {
   try {
-    const { taskId, userId, title, content, date, isArchived } = req.body;
+    const { taskId, title, content, date, isArchived } = req.body;
+    const { userId } = req;
 
     if (!userId) {
       return res.status(401).json({ message: 'Unauthorized' });
@@ -117,7 +120,8 @@ export const editTask = async (req, res) => {
 
 export const deleteTask = async (req, res) => {
   try {
-    const { userId, taskId } = req.query;
+    const { taskId } = req.query;
+    const { userId } = req;
 
     if (!userId) {
       return res.status(401).json({ message: 'Unauthorized' });
@@ -142,7 +146,7 @@ export const deleteTask = async (req, res) => {
 
 export const getTaskDates = async (req, res) => {
   try {
-    const { userId } = req.query;
+    const { userId } = req;
 
     if (!userId) {
       return res.status(401).json({ message: 'Unauthorized' });
