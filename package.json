@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "node index.js --watch"
   },
   "keywords": [],
   "author": "",
@@ -20,8 +20,5 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.10"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.0"
   }
 }
