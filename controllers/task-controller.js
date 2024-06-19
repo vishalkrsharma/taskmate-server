@@ -65,7 +65,7 @@ export const getTask = async (req, res) => {
 
 export const newTask = async (req, res) => {
   try {
-    const { title, content, date, isArchived } = req.body;
+    const { title, description, date, isArchived } = req.body;
     const { userId } = req;
 
     if (!userId) {
@@ -76,7 +76,7 @@ export const newTask = async (req, res) => {
     let istDate = new Date(dateObj.getTime() + 5.5 * 60 * 60 * 1000);
     const istString = istDate.toISOString();
 
-    const task = await Task.create({ userId, title, content, date: new Date(istString), isArchived });
+    const task = await Task.create({ userId, title, description, date: new Date(istString), isArchived });
 
     return res.status(201).json({ message: 'Task created successfully.', success: true, task });
   } catch (error) {
@@ -87,7 +87,7 @@ export const newTask = async (req, res) => {
 
 export const editTask = async (req, res) => {
   try {
-    const { taskId, title, content, date, isArchived } = req.body;
+    const { taskId, title, description, date, isArchived } = req.body;
     const { userId } = req;
 
     if (!userId) {
@@ -105,7 +105,7 @@ export const editTask = async (req, res) => {
     }
 
     task.title = title;
-    task.content = content;
+    task.description = description;
     task.date = date;
     task.isArchived = isArchived;
 
