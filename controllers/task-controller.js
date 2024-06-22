@@ -4,7 +4,7 @@ import { startOfDay, endOfDay } from 'date-fns';
 export const getTasks = async (req, res) => {
   try {
     const { userId } = req;
-    let filter = { isArchived: false };
+    let filter = { isArchived: false, userId };
 
     if (!userId) {
       return res.status(401).json({ message: 'Unauthorized' });
