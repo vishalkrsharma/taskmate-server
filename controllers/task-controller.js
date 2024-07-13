@@ -68,6 +68,8 @@ export const newTask = async (req, res) => {
     const { title, description, date, isArchived } = req.body;
     const { userId } = req;
 
+    console.log(date);
+
     if (!userId) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
@@ -95,7 +97,7 @@ export const editTask = async (req, res) => {
     }
 
     if (!taskId) {
-      return res.status(400).json({ message: 'Task Id is required' });
+      return res.status(400).json({ message: 'Task Id is required.' });
     }
 
     const task = await Task.findOne({ _id: taskId, userId });
@@ -128,7 +130,7 @@ export const deleteTask = async (req, res) => {
     }
 
     if (!taskId) {
-      return res.status(400).json({ message: 'Task Id is required' });
+      return res.status(400).json({ message: 'Task Id is required.' });
     }
 
     const task = await Task.deleteMany({ userId, _id: taskId });
