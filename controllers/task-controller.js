@@ -6,10 +6,6 @@ export const getTasks = async (req, res) => {
     const { userId } = req;
     let filter = { isArchived: false, userId };
 
-    if (!userId) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
-
     if (req.query.past) {
       filter.date = {
         $lt: startOfDay(new Date()),
@@ -46,10 +42,6 @@ export const getTask = async (req, res) => {
     const { taskId } = req.query;
     const { userId } = req;
 
-    if (!userId) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
-
     if (!taskId) {
       return res.status(400).json({ message: 'Task Id is required' });
     }
@@ -68,12 +60,6 @@ export const newTask = async (req, res) => {
     const { title, description, date, isArchived } = req.body;
     const { userId } = req;
 
-    console.log(date);
-
-    if (!userId) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
-
     const dateObj = new Date(date);
     let istDate = new Date(dateObj.getTime() + 5.5 * 60 * 60 * 1000);
     const istString = istDate.toISOString();
@@ -91,10 +77,6 @@ export const editTask = async (req, res) => {
   try {
     const { taskId, title, description, date, isArchived } = req.body;
     const { userId } = req;
-
-    if (!userId) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
 
     if (!taskId) {
       return res.status(400).json({ message: 'Task Id is required.' });
@@ -125,10 +107,6 @@ export const deleteTask = async (req, res) => {
     const { taskId } = req.query;
     const { userId } = req;
 
-    if (!userId) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
-
     if (!taskId) {
       return res.status(400).json({ message: 'Task Id is required.' });
     }
@@ -149,10 +127,6 @@ export const deleteTask = async (req, res) => {
 export const getTaskDates = async (req, res) => {
   try {
     const { userId } = req;
-
-    if (!userId) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
 
     const taskDates = await Task.find({ userId }).distinct('date');
 

@@ -5,10 +5,6 @@ export const changeUsername = async (req, res) => {
     const { username } = req.body;
     const { userId } = req;
 
-    if (!userId) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
-
     const user = await User.findById(userId);
 
     if (!user) {
@@ -36,10 +32,6 @@ export const changePassword = async (req, res) => {
   try {
     const { password } = req.body;
     const { userId } = req;
-
-    if (!userId) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
 
     const user = await User.findById(userId);
 
