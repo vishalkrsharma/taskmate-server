@@ -7,7 +7,7 @@ const router = Router();
 
 router.get('/get-tasks', authentication, getTasks);
 router.get('/get-task', authentication, getTask);
-router.post('/new-task', authentication, authentication, newTask);
+router.post('/new-task', authentication, newTask);
 router.put('/edit-task', authentication, editTask);
 router.delete('/delete-task', authentication, deleteTask);
 router.get('/get-task-dates', authentication, getTaskDates);

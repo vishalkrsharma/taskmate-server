@@ -15,7 +15,6 @@ const schema = Schema(
     },
     description: {
       type: String,
-      required: true,
     },
   },
   {
