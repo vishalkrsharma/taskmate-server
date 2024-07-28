@@ -29,6 +29,6 @@ const schema = Schema(
   }
 );
 
-const task = model('task', schema);
+const Task = model('task', schema);
 
-export default task;
+export default Task;
