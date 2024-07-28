@@ -8,7 +8,7 @@ export const signup = async (req, res, next) => {
     const existingUser = await User.findOne({ username });
 
     if (existingUser) {
-      return res.status(409).json({ message: 'User already exists.' });
+      return res.status(409).json({ error: 'User already exists.' });
     }
 
     const user = await User.create({ username, password });
@@ -30,18 +30,18 @@ export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
     if (!username || !password) {
-      return res.status(400).json({ message: 'All fields are required.' });
+      return res.status(400).json({ error: 'All fields are required.' });
     }
     const user = await User.findOne({ username });
 
     if (!user) {
-      return res.status(400).json({ message: 'User not found.' });
+      return res.status(400).json({ error: 'User not found.' });
     }
 
     const auth = await bcrypt.compare(password, user.password);
 
     if (!auth) {
-      return res.status(401).json({ message: 'Incorrect password.' });
+      return res.status(401).json({ error: 'Incorrect password.' });
     }
 
     const token = createSecretToken(user._id);
@@ -60,7 +60,6 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    console.log('a');
     res.clearCookie('token');
     return res.json({
       success: true,

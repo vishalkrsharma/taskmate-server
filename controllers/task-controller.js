@@ -43,7 +43,7 @@ export const getTask = async (req, res) => {
     const { userId } = req;
 
     if (!taskId) {
-      return res.status(400).json({ message: 'Task Id is required' });
+      return res.status(400).json({ error: 'Task Id is required' });
     }
 
     const task = await Task.findOne({ _id: taskId, userId });
@@ -79,13 +79,13 @@ export const editTask = async (req, res) => {
     const { userId } = req;
 
     if (!taskId) {
-      return res.status(400).json({ message: 'Task Id is required.' });
+      return res.status(400).json({ error: 'Task Id is required.' });
     }
 
     const task = await Task.findOne({ _id: taskId, userId });
 
     if (!task) {
-      return res.status(404).json({ message: 'Task not found.', success: false });
+      return res.status(404).json({ error: 'Task not found.', success: false });
     }
 
     task.title = title;
@@ -108,13 +108,13 @@ export const deleteTask = async (req, res) => {
     const { userId } = req;
 
     if (!taskId) {
-      return res.status(400).json({ message: 'Task Id is required.' });
+      return res.status(400).json({ error: 'Task Id is required.' });
     }
 
     const task = await Task.deleteMany({ userId, _id: taskId });
 
     if (!task) {
-      return res.status(404).json({ message: 'Task not found.', success: false });
+      return res.status(404).json({ error: 'Task not found.', success: false });
     }
 
     return res.status(200).json({ message: 'Task deleted successfully.', success: true });

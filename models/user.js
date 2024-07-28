@@ -22,6 +22,6 @@ schema.pre('save', async function () {
   this.password = await bcrypt.hash(this.password, bcrypt.genSaltSync(5));
 });
 
-const user = model('user', schema);
+const User = model('user', schema);
 
-export default user;
+export default User;
