@@ -2,19 +2,24 @@ import { Schema, model } from 'mongoose';
 
 const schema = Schema(
   {
-    userId: [
+    admin: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+    },
+    members: [
       {
         type: Schema.Types.ObjectId,
         ref: 'user',
+        default: [],
       },
     ],
-
     title: {
       type: String,
       required: true,
     },
-    description: {
+    content: {
       type: String,
+      default: '',
     },
   },
   {
@@ -22,6 +27,6 @@ const schema = Schema(
   }
 );
 
-const scratchpad = model('scratchpad', schema);
+const Scratchpad = model('scratchpad', schema);
 
-export default scratchpad;
+export default Scratchpad;
