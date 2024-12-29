@@ -6,6 +6,8 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { TasksModule } from './modules/tasks/tasks.module';
+import { AuthGaurd } from 'src/modules/auth/auth.gaurd';
 
 @Module({
   imports: [
@@ -18,8 +20,13 @@ import { JwtModule } from '@nestjs/jwt';
     MongooseModule.forRoot(process.env.MONGO_URI),
     AuthModule,
     UsersModule,
+    TasksModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AuthGaurd, AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: any) {
+    consumer.apply(AuthGaurd).forRoutes(TasksModule, UsersModule);
+  }
+}
