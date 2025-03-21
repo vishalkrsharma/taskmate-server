@@ -11,7 +11,9 @@ import {
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { AuthGaurd } from 'src/modules/auth/auth.gaurd';
 
+@UseGuards(AuthGaurd)
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
